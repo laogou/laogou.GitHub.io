@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="算法0001:MAX[左]-MAX[右], 程序员 学习 路线">
+    <meta name="keywords" content="0002-子矩阵的最大累加和, 程序员 学习 路线">
     <meta name="description" content="个人经验总结和学习记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>算法0001:MAX[左]-MAX[右] | 唐岛湾里的小虾米</title>
+    <title>0002-子矩阵的最大累加和 | 唐岛湾里的小虾米</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">算法0001:MAX[左]-MAX[右]</h1>
+                    <h1 class="description center-align post-title">0002-子矩阵的最大累加和</h1>
                 </div>
             </div>
         </div>
@@ -435,8 +435,8 @@
                                 <span class="chip bg-color">算法</span>
                             </a>
                         
-                            <a href="/tags/%E4%B8%9A%E5%8A%A1%E5%88%86%E6%9E%90/">
-                                <span class="chip bg-color">业务分析</span>
+                            <a href="/tags/%E6%8A%80%E5%B7%A7%E5%BA%94%E7%94%A8/">
+                                <span class="chip bg-color">技巧应用</span>
                             </a>
                         
                     </div>
@@ -460,7 +460,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-25
+                    2021-11-27
                 </div>
                 
 
@@ -484,72 +484,115 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="输入一个数组，数组长度大于等于2，将该数组随机的一分为二，分成左数组右数组，求左数组-右数组的绝对值的最大值"><a href="#输入一个数组，数组长度大于等于2，将该数组随机的一分为二，分成左数组右数组，求左数组-右数组的绝对值的最大值" class="headerlink" title="输入一个数组，数组长度大于等于2，将该数组随机的一分为二，分成左数组右数组，求左数组-右数组的绝对值的最大值"></a>输入一个数组，数组长度大于等于2，将该数组随机的一分为二，分成左数组右数组，求左数组-右数组的绝对值的最大值</h1><p><strong>左程云引例</strong></p>
-<h2 id="关键点：左1和右1是必然被划分到左边一组和右边一组的"><a href="#关键点：左1和右1是必然被划分到左边一组和右边一组的" class="headerlink" title="关键点：左1和右1是必然被划分到左边一组和右边一组的"></a>关键点：左1和右1是必然被划分到左边一组和右边一组的</h2><p>解答：</p>
-<p>没有想法的办法：进行遍历，暴力解法。</p>
-<ol>
-<li>遍历数组得到整个数组中最大值</li>
-<li>比较左1和右1谁小，选择小的，划分为一组，数组中的max划分到另一组</li>
-<li>这样，其中一组包含整个数组中最大的max，另一组包含最左/最右中的较小的那个（此时为组中max），得到的max差值就是最大的差值</li>
-</ol>
-<p>代码示例：(急速版本，未进行优化)</p>
-<pre class="line-numbers language-none"><code class="language-none">public class A0001_max_left_max_right &#123;
-    &#x2F;&#x2F;max左-max右
-    &#x2F;&#x2F;描述：把一个数组划分为两个，使得max[左]-max[右]的绝对值达到最大
-    &#x2F;&#x2F;题解：laogou.github.io
-    public static void main(String[] args) &#123;
-        int data[]&#x3D;&#123;342,7,7,84,8,2,65,7,37868,2,77,2435,5&#125;;
-        int max&#x3D;0;
-        int max2&#x3D;0;
-        int result&#x3D;0;
-        for (int i &#x3D; 0; i &lt; data.length; i++) &#123;
-            if (data[i]&gt;data[max])&#123;
-                max&#x3D;i;
+                <h1 id="在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大"><a href="#在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大" class="headerlink" title="在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大"></a>在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大</h1><p><strong>左程云引例</strong></p>
+<p>分析：暴力解法的数量级是N6，因为选取子矩阵左上角N2，选取矩阵右下角是N2，所以固定一个子矩阵是N4，计算累加和为N2，整体数量级是N6.<br>延申：这是最大连续子数组的累加和演变而来的</p>
+<h2 id="连续子数组累加和最大问题"><a href="#连续子数组累加和最大问题" class="headerlink" title="连续子数组累加和最大问题"></a>连续子数组累加和最大问题</h2><p>一个典型的动态规划题目，但是可以用某些技巧来解决。  </p>
+<ul>
+<li>设置两个变量cur、max_result，cur用于累加，max时刻捕获更大的cur值</li>
+<li>cur+=arr[i]  max_result=max(max,cur)</li>
+<li>如果cur小于0，那么置cur为0，否则cur不变<br>以上过程中，实际上是不定头的进行累加，知道选取出一个最大的累加值来。并且可以添加一个变量来记录最近的设为0的位置，即是开始，另一个变量记录结束时的位置<br>考虑：如果数组中全部为负数的时候呢？<br>分析：因为max是跟踪cur的更大的值，当cur为负数时，会被置0，然后选取下一个，所以此流程依然适用于全是负数的情况。  </li>
+</ul>
+<hr>
+<p>发现有两条性质：（假设i~j是累加和最大且最长的连续子数组）（证明为什么对）  </p>
+<ul>
+<li>任何以i开头的连续子数组的前缀都是不小于0的，否则就抛弃了</li>
+<li>任何以i-1为后缀的连续子数组的累加和是小于0的（当累加到i-1的时候，current值一定为0（或者被清零））</li>
+</ul>
+<hr>
+<p>代码示例：</p>
+<pre class="line-numbers language-none"><code class="language-none">class Solution &#123;
+    public int maxSubArray(int[] nums) &#123;
+        int max_result&#x3D;Integer.MIN_VALUE;
+        int current&#x3D;0;
+        for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;
+            current+&#x3D;nums[i];
+            max_result&#x3D;Math.max(max_result,current);
+            if (current&lt;0)&#123;
+                current&#x3D;0;
             &#125;
         &#125;
-        &#x2F;&#x2F;此时max已经取得最大的坐标
-        &#x2F;&#x2F;当max是最后一位时
-        if (max&#x3D;&#x3D;0)&#123;
-            &#x2F;&#x2F;从右边找一个大于最后一位数的
-            for (int i &#x3D; data.length-2; i &gt; 0; i--) &#123;
-                if(data[i]&gt;data[data.length-1])&#123;
-                    max2&#x3D;i;   &#x2F;&#x2F;这里得到区间边界值
-                &#125;
-            &#125;
-            result&#x3D;Math.abs(data[max]-data[data.length-1]); &#x2F;&#x2F;这里得到最终结果
-        &#125;
-        else if(max&#x3D;&#x3D;data.length-1)&#123;
-            &#x2F;&#x2F;从左边找一个大于data[0]的数
-            for (int i &#x3D; 0; i &lt; data.length - 2; i++) &#123;
-                if(data[i]&gt;data[0])&#123;
-                    max2&#x3D;i; &#x2F;&#x2F;得到边界
-                &#125;
-            &#125;
-            result&#x3D;Math.abs(data[max]-data[0]);
-        &#125;
-        &#x2F;&#x2F;max是中间某个值的情况
-        else &#123;
-            if (data[0]&lt;data[data.length-1])&#123;  &#x2F;&#x2F;如果0位的数比较小
-                &#x2F;&#x2F;从左边到max中间找一个大于data[0]的数
-                for (int i &#x3D; 0; i &lt; max - 2; i++) &#123;
-                    if(data[i]&gt;data[0])&#123;
-                        max2&#x3D;i; &#x2F;&#x2F;得到边界
-                    &#125;
-                &#125;
-                result&#x3D;Math.abs(data[max]-data[0]);
-            &#125;
-            else &#123;
-                &#x2F;&#x2F;从max到右边之间找一个大于data[length-1]的数
-                for (int i &#x3D; max; i &lt; data.length-1; i++) &#123;
-                    if(data[i]&gt;data[data.length-1])&#123;
-                        max2&#x3D;i; &#x2F;&#x2F;得到边界
-                    &#125;
-                &#125;
-                result&#x3D;Math.abs(data[max]-data[0]);
-            &#125;
-        &#125;
+        return max_result;
     &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此题解内存消耗44M，只超过37%的提交用户，没有考虑到关于空间复杂度的优化部分。<br>DP解法：（待完善）<br>##原问题：求子矩阵的最大累加和问题</p>
+<ul>
+<li>必须包含第0行，且只包含第0行时（转换为数组最大累加和问题）</li>
+<li>必须包含01行，且只包含01两行的最大矩阵累加和问题。<br>如果仅仅要求包含01两行，可以先纵向累加，然后会得到一个一维数组，实际上是求这个一位数组的最大累加和</li>
+<li>如果只包含0123时……<br>首先进行列累加，会得到一个一维数组，然后求最大累加和</li>
+<li>经过以上处理，那么就会将二维数组的最大累加和问题转换为一位数组的最大累加和问题<br>然后进行行的组合，依次找出不同行的最大累加和，然后最终找出最大累加和，以下是初次版本的代码示例：  <pre class="line-numbers language-none"><code class="language-none">class Solution &#123;
+    public int[] getMaxMatrix(int[][] matrix) &#123;
+
+        int max_result&#x3D;Integer.MIN_VALUE;&#x2F;&#x2F;最大累加和
+        int[] coordinate &#x3D; new int[4];&#x2F;&#x2F;结果坐标存储在一维数组中
+
+        int[] curs &#x3D; new int[matrix[0].length]; &#x2F;&#x2F;存储压缩后的一维数组
+        int temp_max_result&#x3D;Integer.MIN_VALUE;  &#x2F;&#x2F;连续子数组的最大累加和
+        int temp_max_result_temp&#x3D;Integer.MIN_VALUE; &#x2F;&#x2F;求最大连续子数组过程中临时变量
+        int star_temp&#x3D;0;  &#x2F;&#x2F;连续数组开始坐标
+        int fin_temp&#x3D;0;  &#x2F;&#x2F;连续数组结束坐标
+        int star&#x3D;0;  &#x2F;&#x2F;连续数组开始坐标
+        int fin&#x3D;0;  &#x2F;&#x2F;连续数组结束坐标
+
+        &#x2F;&#x2F;从第0行开始，选择可以组合的行列0，01，012....1，12，123......2,23,234....
+        for (int i &#x3D; 0; i &lt; matrix.length; i++) &#123;
+            for (int j &#x3D; i; j &lt; matrix.length ; j++) &#123;
+
+                &#x2F;&#x2F;现在选择了i行到j行，累加为一维数组
+                for (int k &#x3D; 0; k &lt; matrix[0].length; k++) &#123;
+                    &#x2F;&#x2F;进行累加和
+                    for (int n &#x3D; i; n &lt;&#x3D; j; n++) &#123;
+                        curs[k] +&#x3D; matrix[n][k];
+                    &#125;
+                &#125;
+                &#x2F;&#x2F;得到一维数组curs[k]，是二维矩阵压缩（纵向累加）后的一维数组
+                &#x2F;&#x2F;接下来计算一维数组curs数组的最大连续子数组
+                for (int k &#x3D; 0; k &lt; matrix[0].length; k++) &#123;
+                    &#x2F;&#x2F;如何记录最大值的开始的位置？
+                    if(temp_max_result_temp&lt;0)&#123;
+                        temp_max_result_temp&#x3D;curs[k];
+                        star_temp&#x3D;k;
+                        fin_temp&#x3D;k;
+                    &#125;
+                    else &#123;
+                        temp_max_result_temp+&#x3D;curs[k];
+                        fin_temp&#x3D;k;
+                    &#125;
+                    if(temp_max_result&lt;temp_max_result_temp)&#123;
+                        temp_max_result&#x3D;temp_max_result_temp;
+                        &#x2F;&#x2F;保存位置变量
+                        star&#x3D;star_temp;
+                        fin&#x3D;fin_temp;
+                    &#125;
+                &#125;
+
+                &#x2F;&#x2F;以上一轮for计算完毕后会得到i~j压缩后的最大连续子数组
+                if(max_result&lt;temp_max_result)&#123;
+                    max_result&#x3D;temp_max_result;
+                    coordinate[0]&#x3D;i;
+                    coordinate[1]&#x3D;star;
+                    coordinate[2]&#x3D;j;
+                    coordinate[3]&#x3D;fin;
+                &#125;
+
+                &#x2F;&#x2F;变量初始化
+                temp_max_result_temp&#x3D;Integer.MIN_VALUE;
+                for (int k &#x3D; 0; k &lt; matrix[0].length; k++) &#123;
+                    curs[k]&#x3D;0;
+                &#125;
+                star_temp&#x3D;0;
+                fin_temp&#x3D;0;
+            &#125;
+        &#125;
+        return coordinate;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<p>反馈结果并不理想：<br>执行耗时:1515 ms,击败了5.03% 的Java用户<br>内存消耗:43.1 MB,击败了37.74% 的Java用户<br>因此需要进行优化。</p>
+<h2 id="优化代码"><a href="#优化代码" class="headerlink" title="优化代码"></a>优化代码</h2><ul>
+<li>可以用行累加方法代替每次逐行累加求解（缩小时间消耗）<br>（待更新）</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -575,7 +618,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://laogou.github.io/2021/11/25/0001-max-zuo-max-you/">http://laogou.github.io/2021/11/25/0001-max-zuo-max-you/</a>
+                    <a href="http://laogou.github.io/2021/11/27/0002-zi-ju-zhen-de-zui-da-lei-jia-he/">http://laogou.github.io/2021/11/27/0002-zi-ju-zhen-de-zui-da-lei-jia-he/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -617,8 +660,8 @@
                                     <span class="chip bg-color">算法</span>
                                 </a>
                             
-                                <a href="/tags/%E4%B8%9A%E5%8A%A1%E5%88%86%E6%9E%90/">
-                                    <span class="chip bg-color">业务分析</span>
+                                <a href="/tags/%E6%8A%80%E5%B7%A7%E5%BA%94%E7%94%A8/">
+                                    <span class="chip bg-color">技巧应用</span>
                                 </a>
                             
                         </div>
@@ -788,70 +831,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/11/26/zhi-shi-tu-pu-gou-jian-zong-shu-yu-ge-ren-guan-dian/">
+                <a href="/2021/11/27/0002-zi-ju-zhen-de-zui-da-lei-jia-he/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="知识图谱构建综述与个人观点">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="0002-子矩阵的最大累加和">
                         
-                        <span class="card-title">知识图谱构建综述与个人观点</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-26
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" class="post-category">
-                                    知识图谱
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">
-                        <span class="chip bg-color">知识图谱</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%9E%84%E5%BB%BA/">
-                        <span class="chip bg-color">构建</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/11/25/0001-max-zuo-max-you/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="算法0001:MAX[左]-MAX[右]">
-                        
-                        <span class="card-title">算法0001:MAX[左]-MAX[右]</span>
+                        <span class="card-title">0002-子矩阵的最大累加和</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -862,7 +853,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-27
                             </span>
                         <span class="publish-author">
                             
@@ -884,8 +875,61 @@
                         <span class="chip bg-color">算法</span>
                     </a>
                     
-                    <a href="/tags/%E4%B8%9A%E5%8A%A1%E5%88%86%E6%9E%90/">
-                        <span class="chip bg-color">业务分析</span>
+                    <a href="/tags/%E6%8A%80%E5%B7%A7%E5%BA%94%E7%94%A8/">
+                        <span class="chip bg-color">技巧应用</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/11/26/zhi-shi-tu-pu-gou-jian-zong-shu-yu-ge-ren-guan-dian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="知识图谱构建综述与个人观点">
+                        
+                        <span class="card-title">知识图谱构建综述与个人观点</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" class="post-category">
+                                    知识图谱
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">
+                        <span class="chip bg-color">知识图谱</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%9E%84%E5%BB%BA/">
+                        <span class="chip bg-color">构建</span>
                     </a>
                     
                 </div>

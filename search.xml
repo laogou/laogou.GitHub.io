@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title>0002-子矩阵的最大累加和</title>
+      <link href="/2021/11/27/0002-zi-ju-zhen-de-zui-da-lei-jia-he/"/>
+      <url>/2021/11/27/0002-zi-ju-zhen-de-zui-da-lei-jia-he/</url>
+      
+        <content type="html"><![CDATA[<h1 id="在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大"><a href="#在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大" class="headerlink" title="在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大"></a>在一个矩阵中，选取一个子矩阵，使得子矩阵的累加和为最大</h1><p><strong>左程云引例</strong></p><p>分析：暴力解法的数量级是N6，因为选取子矩阵左上角N2，选取矩阵右下角是N2，所以固定一个子矩阵是N4，计算累加和为N2，整体数量级是N6.<br>延申：这是最大连续子数组的累加和演变而来的</p><h2 id="连续子数组累加和最大问题"><a href="#连续子数组累加和最大问题" class="headerlink" title="连续子数组累加和最大问题"></a>连续子数组累加和最大问题</h2><p>一个典型的动态规划题目，但是可以用某些技巧来解决。  </p><ul><li>设置两个变量cur、max_result，cur用于累加，max时刻捕获更大的cur值</li><li>cur+=arr[i]  max_result=max(max,cur)</li><li>如果cur小于0，那么置cur为0，否则cur不变<br>以上过程中，实际上是不定头的进行累加，知道选取出一个最大的累加值来。并且可以添加一个变量来记录最近的设为0的位置，即是开始，另一个变量记录结束时的位置<br>考虑：如果数组中全部为负数的时候呢？<br>分析：因为max是跟踪cur的更大的值，当cur为负数时，会被置0，然后选取下一个，所以此流程依然适用于全是负数的情况。  </li></ul><hr><p>发现有两条性质：（假设i~j是累加和最大且最长的连续子数组）（证明为什么对）  </p><ul><li>任何以i开头的连续子数组的前缀都是不小于0的，否则就抛弃了</li><li>任何以i-1为后缀的连续子数组的累加和是小于0的（当累加到i-1的时候，current值一定为0（或者被清零））</li></ul><hr><p>代码示例：</p><pre class="line-numbers language-none"><code class="language-none">class Solution &#123;    public int maxSubArray(int[] nums) &#123;        int max_result&#x3D;Integer.MIN_VALUE;        int current&#x3D;0;        for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;            current+&#x3D;nums[i];            max_result&#x3D;Math.max(max_result,current);            if (current&lt;0)&#123;                current&#x3D;0;            &#125;        &#125;        return max_result;    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>此题解内存消耗44M，只超过37%的提交用户，没有考虑到关于空间复杂度的优化部分。<br>DP解法：（待完善）<br>##原问题：求子矩阵的最大累加和问题</p><ul><li>必须包含第0行，且只包含第0行时（转换为数组最大累加和问题）</li><li>必须包含01行，且只包含01两行的最大矩阵累加和问题。<br>如果仅仅要求包含01两行，可以先纵向累加，然后会得到一个一维数组，实际上是求这个一位数组的最大累加和</li><li>如果只包含0123时……<br>首先进行列累加，会得到一个一维数组，然后求最大累加和</li><li>经过以上处理，那么就会将二维数组的最大累加和问题转换为一位数组的最大累加和问题<br>然后进行行的组合，依次找出不同行的最大累加和，然后最终找出最大累加和，以下是初次版本的代码示例：  <pre class="line-numbers language-none"><code class="language-none">class Solution &#123;    public int[] getMaxMatrix(int[][] matrix) &#123;        int max_result&#x3D;Integer.MIN_VALUE;&#x2F;&#x2F;最大累加和        int[] coordinate &#x3D; new int[4];&#x2F;&#x2F;结果坐标存储在一维数组中        int[] curs &#x3D; new int[matrix[0].length]; &#x2F;&#x2F;存储压缩后的一维数组        int temp_max_result&#x3D;Integer.MIN_VALUE;  &#x2F;&#x2F;连续子数组的最大累加和        int temp_max_result_temp&#x3D;Integer.MIN_VALUE; &#x2F;&#x2F;求最大连续子数组过程中临时变量        int star_temp&#x3D;0;  &#x2F;&#x2F;连续数组开始坐标        int fin_temp&#x3D;0;  &#x2F;&#x2F;连续数组结束坐标        int star&#x3D;0;  &#x2F;&#x2F;连续数组开始坐标        int fin&#x3D;0;  &#x2F;&#x2F;连续数组结束坐标        &#x2F;&#x2F;从第0行开始，选择可以组合的行列0，01，012....1，12，123......2,23,234....        for (int i &#x3D; 0; i &lt; matrix.length; i++) &#123;            for (int j &#x3D; i; j &lt; matrix.length ; j++) &#123;                &#x2F;&#x2F;现在选择了i行到j行，累加为一维数组                for (int k &#x3D; 0; k &lt; matrix[0].length; k++) &#123;                    &#x2F;&#x2F;进行累加和                    for (int n &#x3D; i; n &lt;&#x3D; j; n++) &#123;                        curs[k] +&#x3D; matrix[n][k];                    &#125;                &#125;                &#x2F;&#x2F;得到一维数组curs[k]，是二维矩阵压缩（纵向累加）后的一维数组                &#x2F;&#x2F;接下来计算一维数组curs数组的最大连续子数组                for (int k &#x3D; 0; k &lt; matrix[0].length; k++) &#123;                    &#x2F;&#x2F;如何记录最大值的开始的位置？                    if(temp_max_result_temp&lt;0)&#123;                        temp_max_result_temp&#x3D;curs[k];                        star_temp&#x3D;k;                        fin_temp&#x3D;k;                    &#125;                    else &#123;                        temp_max_result_temp+&#x3D;curs[k];                        fin_temp&#x3D;k;                    &#125;                    if(temp_max_result&lt;temp_max_result_temp)&#123;                        temp_max_result&#x3D;temp_max_result_temp;                        &#x2F;&#x2F;保存位置变量                        star&#x3D;star_temp;                        fin&#x3D;fin_temp;                    &#125;                &#125;                &#x2F;&#x2F;以上一轮for计算完毕后会得到i~j压缩后的最大连续子数组                if(max_result&lt;temp_max_result)&#123;                    max_result&#x3D;temp_max_result;                    coordinate[0]&#x3D;i;                    coordinate[1]&#x3D;star;                    coordinate[2]&#x3D;j;                    coordinate[3]&#x3D;fin;                &#125;                &#x2F;&#x2F;变量初始化                temp_max_result_temp&#x3D;Integer.MIN_VALUE;                for (int k &#x3D; 0; k &lt; matrix[0].length; k++) &#123;                    curs[k]&#x3D;0;                &#125;                star_temp&#x3D;0;                fin_temp&#x3D;0;            &#125;        &#125;        return coordinate;    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul><hr><p>反馈结果并不理想：<br>执行耗时:1515 ms,击败了5.03% 的Java用户<br>内存消耗:43.1 MB,击败了37.74% 的Java用户<br>因此需要进行优化。</p><h2 id="优化代码"><a href="#优化代码" class="headerlink" title="优化代码"></a>优化代码</h2><ul><li>可以用行累加方法代替每次逐行累加求解（缩小时间消耗）<br>（待更新）</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 技巧应用 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>知识图谱构建综述与个人观点</title>
+      <link href="/2021/11/26/zhi-shi-tu-pu-gou-jian-zong-shu-yu-ge-ren-guan-dian/"/>
+      <url>/2021/11/26/zhi-shi-tu-pu-gou-jian-zong-shu-yu-ge-ren-guan-dian/</url>
+      
+        <content type="html"><![CDATA[<h1 id="知识图谱构建相关综述与实践"><a href="#知识图谱构建相关综述与实践" class="headerlink" title="知识图谱构建相关综述与实践"></a>知识图谱构建相关综述与实践</h1><hr><pre class="line-numbers language-none"><code class="language-none">1. 科研承担任务：知识图谱的构建，其中知识表示、知识形式化、知识推理部分以及标准制定等由其他人完成。2. 知识图谱的构建涉及知识建模、关系抽取、图存储、关系推理、实体融合等多方面技术。3. 知识图谱的应用则体现在语义搜索、智能问答、语言理解、决策分析等多个领域。我们主要运用在决策分析和预测方面。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h2 id="2020-11-26更新"><a href="#2020-11-26更新" class="headerlink" title="2020.11.26更新"></a>2020.11.26更新</h2><hr><p>此前已经阅读过非常多的中外文献，首先是以事理图谱为切入点进行研究，但是发现起点太高，知识图谱还没有搞明白。经过自我批评和反省，后来改变策略，要在知识图谱方面进行一定的学习和创新。<br>偶然间发现并阅读了魔图互联（motuhulian.com）关于知识图谱的内容，在这个网站中，对这知识图谱的原理以及目前来说比较成熟的构建技术做出了详细的说明。  </p><hr><h3 id="首次实践"><a href="#首次实践" class="headerlink" title="首次实践"></a>首次实践</h3><hr><p>根据描述，下载安装了Neo4j图形数据库桌面版并进行了使用。前几日组会，Dr.Du举例了关于人与狗相处的事件，深入思考分析这个事件，会得到以下几种实体、属性、关系等内容。这个步骤以后会交给NLP来完成或者相关的DL、ML技术来完成。起步阶段，由人工进行分析，建库。</p><ul><li>实体：或称本体，是客观存在并和区别的事物，可以是人、事、物，或者是抽象的概念，是最基本的要素。  <pre class="line-numbers language-none"><code class="language-none">本例子中包含实体：人、狗、张三、李四、狗三、狗四<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li><li>关系：表示不同实体之间的某种联系  <pre class="line-numbers language-none"><code class="language-none">本例子中，张三李四属于人类，张三是李四朋友。狗三狗四属于狗类，狗三的主人是张三，狗四的主人是李四，张三的狗咬李四等关系。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li><li>属性：知识图谱中实体和关系都可以有各自的属性  <pre class="line-numbers language-none"><code class="language-none">1实体的属性：人的属性、张三的属性。2关系的属性：朋友的属性、狗咬人的属性等。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li></ul><hr><p>由此，确定了基本的概念和相关定义，接下来在Neo4j中创建知识图谱。(Neo4j采用Cypher语言进行操作库)  </p><ol><li>首先，新建一个Neo4j数据库。我们删除数据库中以往的图，确保一个空白的环境进行操作：<pre class="line-numbers language-none"><code class="language-none">MATCH (n) DETACH DELETE n<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>这里，MATCH是匹配操作，而小括号()代表一个节点node（可理解为括号类似一个圆形），括号里面的n为标识符。  </li><li>接着，创建实体节点：<pre class="line-numbers language-none"><code class="language-none">CREATE (n:Person &#123;name:&#39;人类&#39;&#125;) RETURN nCREATE (n:Dog &#123;name:&#39;狗类&#39;&#125;) RETURN nCREATE (n:Person &#123;name:&#39;张三&#39;&#125;) RETURN nCREATE (n:Person &#123;name:&#39;李四&#39;&#125;) RETURN nCREATE (n:Dog &#123;name:&#39;狗三&#39;,Traits:&#39;温顺&#39;&#125;) RETURN nCREATE (n:Dog &#123;name:&#39;狗四&#39;,Traits:&#39;狂暴&#39;&#125;) RETURN n<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>CREATE是创建操作，Person是标签，代表节点的类型。花括号{}代表节点的属性，属性类似Python的字典。这条语句的含义就是创建一个标签为Person的节点，该节点具有一个name属性，属性值是John。</li></ol><p>然后增加关系</p><pre class="line-numbers language-none"><code class="language-none">MATCH (a:Person &#123;name:&#39;张三&#39;&#125;),       (b:Person &#123;name:&#39;人类&#39;&#125;) MERGE (a)-[:BELONG]-&gt;(b)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>以此类推，然后进行丰富，最终形成如下知识图谱。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 知识图谱 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 知识图谱 </tag>
+            
+            <tag> 构建 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>算法0001:MAX[左]-MAX[右]</title>
       <link href="/2021/11/25/0001-max-zuo-max-you/"/>
       <url>/2021/11/25/0001-max-zuo-max-you/</url>
