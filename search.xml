@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>局部最小值问题</title>
+      <link href="/2021/12/01/ju-bu-zui-xiao-zhi-wen-ti/"/>
+      <url>/2021/12/01/ju-bu-zui-xiao-zhi-wen-ti/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h1><p>现在有一数组arr，无序，任意相邻两数不等。定义规则：局部最小。即arr[0]&lt;arr[1]，那么0位置上为局部最小，arr[n-1]&lt;arr[n-2]，那么n-2位置上局部最小，arr[i]&lt;arr[i-1]、arr[i]&lt;arr[i+1],那么arr[i]局部最小。<br>要求找出一个局部最小位置，时间复杂度能不能好于O(n)？</p><h1 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h1><ul><li>无序也可以二分，观察数据情况</li><li><ol><li>如果arr[0]&lt;arr[1]，直接返回arr[0]，否则0~1数据是降序的。</li></ol></li><li><ol start="2"><li>如果arr[n-1]&lt;arr[n-2]，直接返回arr[n-1]，否则n-1~n-2数据是降序的。</li></ol></li><li><ol start="3"><li>推断：如果两端数据向中间的趋势都是降序的，那么在中间某位置，必然存在一个局部最小值</li></ol></li><li><ol start="4"><li>取中间某数m，若arr[m]&lt;arr[m-1]且arr[m]&lt;arr[m+1]，那么arr[m]为局部最小值。</li></ol></li><li><ol start="5"><li>否则：若arr[m]&gt;arr[m-1]，那么重复3（范围0<del>m）；若arr[m]&lt;arr[m-1]，那么重复3（范围m</del>n-1）<pre class="line-numbers language-none"><code class="language-none">class Solution &#123;    public int findPeakElement(int[] nums) &#123;        int N&#x3D; nums.length-1;        if (N&#x3D;&#x3D;0)&#123;            &#x2F;&#x2F;如果只有一个数            return 0;        &#125;        if(nums[0]&gt;nums[1])&#123;            &#x2F;&#x2F;认为0位置是峰值            return 0;        &#125;        else if(nums[N]&gt;nums[N-1])&#123;            &#x2F;&#x2F;认为末位置是峰值            return N;        &#125;        else &#123;            &#x2F;&#x2F;两端数据为升序，那么必然在中间存在峰值            int before&#x3D;0,last&#x3D;N;            return TwoDis(nums, before, last);        &#125;    &#125;    public int TwoDis(int[]nums, int before, int last)&#123;        int mid&#x3D;(before+last)&#x2F;2;        if(nums[mid]&gt;nums[mid-1] &amp;&amp; nums[mid]&gt;nums[mid+1])&#123;            return mid;        &#125;        else if (nums[mid]&lt;nums[mid-1])&#123;            return TwoDis(nums,before,mid);        &#125;        else if(nums[mid]&lt;nums[mid+1])&#123;            return TwoDis(nums,mid,last);        &#125;        return -1;    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>此题目与leetcode162寻找峰值相同。  <pre><code>info解答成功:执行耗时:0 ms,击败了100.00% 的Java用户内存消耗:38.3 MB,击败了8.54% 的Java用户</code></pre>在时间上已经是最优化，可能因为递归的原因占用内存较大。</li></ol></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>一种交换位置的方法+面试题</title>
       <link href="/2021/12/01/yi-chong-jiao-huan-wei-zhi-de-fang-fa/"/>
       <url>/2021/12/01/yi-chong-jiao-huan-wei-zhi-de-fang-fa/</url>
