@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="局部最小值问题, 程序员 学习 路线">
+    <meta name="keywords" content="小和问题和逆序对问题, 程序员 学习 路线">
     <meta name="description" content="个人经验总结和学习记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>局部最小值问题 | 唐岛湾里的小虾米</title>
+    <title>小和问题和逆序对问题 | 唐岛湾里的小虾米</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">局部最小值问题</h1>
+                    <h1 class="description center-align post-title">小和问题和逆序对问题</h1>
                 </div>
             </div>
         </div>
@@ -456,7 +456,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-01
+                    2021-12-02
                 </div>
                 
 
@@ -480,69 +480,98 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h1><p>现在有一数组arr，无序，任意相邻两数不等。定义规则：局部最小。即arr[0]&lt;arr[1]，那么0位置上为局部最小，arr[n-1]&lt;arr[n-2]，那么n-2位置上局部最小，arr[i]&lt;arr[i-1]、arr[i]&lt;arr[i+1],那么arr[i]局部最小。<br>要求找出一个局部最小位置，时间复杂度能不能好于O(n)？</p>
-<h1 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h1><ul>
-<li>无序也可以二分，观察数据情况，只要确定有一边和问题有关，并能够甩掉一边，就可以进行二分了。</li>
-<li><ol>
-<li>如果arr[0]&lt;arr[1]，直接返回arr[0]，否则0~1数据是降序的。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>如果arr[n-1]&lt;arr[n-2]，直接返回arr[n-1]，否则n-1~n-2数据是降序的。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>推断：如果两端数据向中间的趋势都是降序的，那么在中间某位置，必然存在一个局部最小值</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>取中间某数m，若arr[m]&lt;arr[m-1]且arr[m]&lt;arr[m+1]，那么arr[m]为局部最小值。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>否则：若arr[m]&gt;arr[m-1]，那么重复3（范围0<del>m）；若arr[m]&lt;arr[m-1]，那么重复3（范围m</del>n-1）<pre class="line-numbers language-none"><code class="language-none">class Solution &#123;
-    public int findPeakElement(int[] nums) &#123;
-        int N&#x3D; nums.length-1;
-        if (N&#x3D;&#x3D;0)&#123;
-            &#x2F;&#x2F;如果只有一个数
+                <h2 id="归并排序的拓展"><a href="#归并排序的拓展" class="headerlink" title="归并排序的拓展"></a>归并排序的拓展</h2><ul>
+<li>小和问题描述：<br>在一个数组中，每一个数左边比当前数小的数累加起来，叫做这个数组的小和，求一个数组的小和。<br>[1,3,4,2,5]，3左边比3小的数1，4左边比4小的数13，5左边比5小的数1342，所以小和为1+1+3+1+1+3+4+2=16  </li>
+<li>思路：<br>暴力解法，时间复杂度O(n2)。<br>使用归并的思想解题，可以在merge的过程中就能够求出所有的小和。<br>换一种思路，某个数右边有多少个数比它大，那么它就会有多少次计算到小和中。可以使用归并，复杂度nlogn。详细过程：&lt;<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1q34y1S7G1?p=3&spm_id_from=pageDriver">详细过程</a>&gt;1:07:00<br>小和问题代码，根据左程云思路描写。<pre class="line-numbers language-none"><code class="language-none">public class Code05_SmallSum &#123;
+    public static int smallSum(int[] arr) &#123;
+        if (arr.length&#x3D;&#x3D;0 || arr.length&lt;2)&#123;
             return 0;
         &#125;
-        if(nums[0]&gt;nums[1])&#123;
-            &#x2F;&#x2F;认为0位置是峰值
+        int L&#x3D;0,R&#x3D;arr.length-1;
+        return process(arr,L,R);
+    &#125;
+    &#x2F;&#x2F;既要排好，又要计算小和
+    public static int process(int[]arr, int L, int R)&#123;
+        if (L&#x3D;&#x3D;R)&#123;
             return 0;
         &#125;
-        else if(nums[N]&gt;nums[N-1])&#123;
-            &#x2F;&#x2F;认为末位置是峰值
-            return N;
-        &#125;
-        else &#123;
-            &#x2F;&#x2F;两端数据为升序，那么必然在中间存在峰值
-            int before&#x3D;0,last&#x3D;N;
-            return TwoDis(nums, before, last);
-        &#125;
+        int M&#x3D;L+((R-L)&gt;&gt;1); &#x2F;&#x2F;中间值
+        return process(arr, L,M)+ process(arr,M+1,R)+merge(arr,L,M,R);
     &#125;
-    public int TwoDis(int[]nums, int before, int last)&#123;
-        int mid&#x3D;(before+last)&#x2F;2;
-        if(nums[mid]&gt;nums[mid-1] &amp;&amp; nums[mid]&gt;nums[mid+1])&#123;
-            return mid;
+
+    public static int merge(int[]arr,int L,int M, int R)&#123;
+        int sum&#x3D;0;
+        int p1&#x3D;L,p2&#x3D;M+1;
+        int[]help&#x3D;new int[R-L+1];
+        int i&#x3D;0;
+        while (p1&lt;&#x3D;M &amp;&amp; p2&lt;&#x3D;R)&#123;
+            sum+&#x3D;arr[p1]&lt;arr[p2]?(R-p2+1)*arr[p1]:0;  &#x2F;&#x2F;因为右侧是有序的，所以如果第一个数大，那么后面的数都会大。
+            help[i++]&#x3D; arr[p1]&lt;arr[p2]?arr[p1++]:arr[p2++]; &#x2F;&#x2F;和普通归并一点不同的是，当左右相等时，首先拷贝右边的，因为这样不会产生小和。
+            &#x2F;&#x2F;help[i++]&#x3D; arr[p1]&lt;&#x3D;arr[p2]?arr[p1++]:arr[p2++]  &#x2F;&#x2F;这是普通归并，只要前面数组第一个数不大于后面数组第一个数就把前面数放入，而求小和，需要完全小于
         &#125;
-        else if (nums[mid]&lt;nums[mid-1])&#123;
-            return TwoDis(nums,before,mid);
+        while (p1&lt;&#x3D;M)&#123;
+            help[i++]&#x3D;arr[p1++];
         &#125;
-        else if(nums[mid]&lt;nums[mid+1])&#123;
-            return TwoDis(nums,mid,last);
+        while (p2&lt;&#x3D;R)&#123;
+            help[i++]&#x3D;arr[p2++];
         &#125;
-        return -1;
+        for (int j &#x3D; 0; j &lt; help.length; j++) &#123;
+            arr[L+i]&#x3D;help[i];
+        &#125;
+        return sum;
     &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-此题目与leetcode162寻找峰值相同。  <pre><code>info
-解答成功:
-执行耗时:0 ms,击败了100.00% 的Java用户
-内存消耗:38.3 MB,击败了8.54% 的Java用户
-</code></pre>
-在时间上已经是最优化，可能因为递归的原因占用内存较大。</li>
-</ol>
-</li>
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>逆序对问题描述（趁热打铁）<br>在一个数组中，左边的数比右边的数大，则两个数构成一个逆序对，打印所有逆序对。</li>
+<li>解题：<br>使用归并解法，可以在merge的过程中就能够求出所有的小和。合并时，当前一个数大于后一个数，那么，前一个数与后面所有的数都组成一个逆序对，<code>ans+=(R-p2+1);</code>，注意当一样大的时，要放选择后面数组的第一个数放下，这样才不会漏解。  <pre class="line-numbers language-none"><code class="language-none">class Solution &#123;
+    public int reversePairs(int[] nums) &#123;
+        if (nums&#x3D;&#x3D;null || nums.length&lt;2)&#123;
+            return 0;
+        &#125;
+        int L&#x3D;0,R&#x3D;nums.length-1;
+        return process(nums,L,R);
+    &#125;
+
+    public int process(int[] nums,int L, int R) &#123;
+        if (L&#x3D;&#x3D;R)&#123;
+            return 0;
+        &#125;
+        int M&#x3D;L+((R-L)&gt;&gt;1);
+        return process(nums,L,M)+process(nums,M+1,R)+merge(nums,L,M,R);
+    &#125;
+    public int merge(int[]nums, int L,int M, int R)&#123;
+        if (L&#x3D;&#x3D;R)&#123;
+            return 0;
+        &#125;
+        int p1&#x3D;L,p2&#x3D;M+1;
+        int ans&#x3D;0;
+        int i&#x3D;0;
+        int[]help&#x3D;new int[R-L+1];
+        while (p1&lt;&#x3D;M &amp;&amp; p2&lt;&#x3D;R)&#123;
+            if (nums[p1]&gt;nums[p2])&#123;
+                ans+&#x3D;(R-p2+1);
+                help[i++]&#x3D;nums[p1++];
+            &#125;
+            else if (nums[p1]&lt;nums[p2])&#123;
+                help[i++]&#x3D;nums[p2++];
+            &#125;
+            else &#123;
+                help[i++]&#x3D;nums[p2++];
+            &#125;
+        &#125;
+        while (p1&lt;&#x3D;M)&#123;
+            help[i++]&#x3D;nums[p1++];
+        &#125;
+        while (p2&lt;&#x3D;R)&#123;
+            help[i++]&#x3D;nums[p2++];
+        &#125;
+        for (int j &#x3D; 0; j &lt; help.length; j++) &#123;
+            nums[L+j]&#x3D;help[j];
+        &#125;
+        return ans;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+此题是剑指offer 51题，我解答成功。</li>
 </ul>
 
                 
@@ -570,7 +599,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://laogou.github.io/2021/12/01/ju-bu-zui-xiao-zhi-wen-ti/">http://laogou.github.io/2021/12/01/ju-bu-zui-xiao-zhi-wen-ti/</a>
+                    <a href="http://laogou.github.io/2021/12/02/xiao-he-wen-ti-he-ni-xu-dui-wen-ti/">http://laogou.github.io/2021/12/02/xiao-he-wen-ti-he-ni-xu-dui-wen-ti/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -783,13 +812,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/12/02/oj-chang-yong-dai-ma/">
+                <a href="/2021/12/04/kuai-pai-sui-ji-shu-v3-0/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="OJ常用代码">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="快排+随机数V3.0">
                         
-                        <span class="card-title">OJ常用代码</span>
+                        <span class="card-title">快排+随机数V3.0</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -800,7 +829,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-02
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-04
                         </span>
                         <span class="publish-author">
                             
@@ -832,13 +861,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/12/01/yi-chong-jiao-huan-wei-zhi-de-fang-fa/">
+                <a href="/2021/12/02/oj-chang-yong-dai-ma/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="一种交换位置的方法+面试题">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="OJ常用代码">
                         
-                        <span class="card-title">一种交换位置的方法+面试题</span>
+                        <span class="card-title">OJ常用代码</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -849,7 +878,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-02
                             </span>
                         <span class="publish-author">
                             

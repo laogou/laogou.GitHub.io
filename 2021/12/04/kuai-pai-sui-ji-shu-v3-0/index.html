@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="局部最小值问题, 程序员 学习 路线">
+    <meta name="keywords" content="快排+随机数V3.0, 程序员 学习 路线">
     <meta name="description" content="个人经验总结和学习记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>局部最小值问题 | 唐岛湾里的小虾米</title>
+    <title>快排+随机数V3.0 | 唐岛湾里的小虾米</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">局部最小值问题</h1>
+                    <h1 class="description center-align post-title">快排+随机数V3.0</h1>
                 </div>
             </div>
         </div>
@@ -456,7 +456,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-01
+                    2021-12-04
                 </div>
                 
 
@@ -480,70 +480,56 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h1><p>现在有一数组arr，无序，任意相邻两数不等。定义规则：局部最小。即arr[0]&lt;arr[1]，那么0位置上为局部最小，arr[n-1]&lt;arr[n-2]，那么n-2位置上局部最小，arr[i]&lt;arr[i-1]、arr[i]&lt;arr[i+1],那么arr[i]局部最小。<br>要求找出一个局部最小位置，时间复杂度能不能好于O(n)？</p>
-<h1 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h1><ul>
-<li>无序也可以二分，观察数据情况，只要确定有一边和问题有关，并能够甩掉一边，就可以进行二分了。</li>
-<li><ol>
-<li>如果arr[0]&lt;arr[1]，直接返回arr[0]，否则0~1数据是降序的。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>如果arr[n-1]&lt;arr[n-2]，直接返回arr[n-1]，否则n-1~n-2数据是降序的。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>推断：如果两端数据向中间的趋势都是降序的，那么在中间某位置，必然存在一个局部最小值</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>取中间某数m，若arr[m]&lt;arr[m-1]且arr[m]&lt;arr[m+1]，那么arr[m]为局部最小值。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>否则：若arr[m]&gt;arr[m-1]，那么重复3（范围0<del>m）；若arr[m]&lt;arr[m-1]，那么重复3（范围m</del>n-1）<pre class="line-numbers language-none"><code class="language-none">class Solution &#123;
-    public int findPeakElement(int[] nums) &#123;
-        int N&#x3D; nums.length-1;
-        if (N&#x3D;&#x3D;0)&#123;
-            &#x2F;&#x2F;如果只有一个数
-            return 0;
+                <p>最初版本的快排已经是非常了解，但是最坏的情况时间复杂度为O(n^2)，现在通过分三段加上随机数，这样就形成了快排3.0版本，时间复杂度为O(nlogn)，空间复杂度为O(logn)。代码如下，可当作一个模板使用  </p>
+<pre class="line-numbers language-none"><code class="language-none">package class01;
+
+&#x2F;**
+ * Creat by zhangzhiyuan
+ * Date 2021&#x2F;12&#x2F;3
+ * Time 16:34
+ * 快排3.0版本+随机数
+ *&#x2F;
+public class Code06_QuickSort &#123;
+    public static void quickSort(int[] arr) &#123;
+        if (arr&#x3D;&#x3D;null || arr.length&lt;2)&#123;
+            return;
         &#125;
-        if(nums[0]&gt;nums[1])&#123;
-            &#x2F;&#x2F;认为0位置是峰值
-            return 0;
-        &#125;
-        else if(nums[N]&gt;nums[N-1])&#123;
-            &#x2F;&#x2F;认为末位置是峰值
-            return N;
-        &#125;
-        else &#123;
-            &#x2F;&#x2F;两端数据为升序，那么必然在中间存在峰值
-            int before&#x3D;0,last&#x3D;N;
-            return TwoDis(nums, before, last);
+        quickSort(arr,0,arr.length-1);
+    &#125;
+    public static void quickSort(int[]arr,int L,int R)&#123;
+        if (L&lt;R)&#123;
+            swap(arr,L+(int)(Math.random()*(R-L+1)),R); &#x2F;&#x2F;选出一个随机位置和最后一位交换，作为partition
+            int[]p&#x3D;partition(arr,L,R); &#x2F;&#x2F;返回的这个数组长度一定为2，是等于划分值（标志位）的左边界和右边界
+            quickSort(arr,L,p[0]-1);  &#x2F;&#x2F;这里的p[0]是中间等于划分值区域的左边界
+            quickSort(arr,p[0]+1,R);    &#x2F;&#x2F;这里的p[1]是中间等于划分值区域的右边界
         &#125;
     &#125;
-    public int TwoDis(int[]nums, int before, int last)&#123;
-        int mid&#x3D;(before+last)&#x2F;2;
-        if(nums[mid]&gt;nums[mid-1] &amp;&amp; nums[mid]&gt;nums[mid+1])&#123;
-            return mid;
-        &#125;
-        else if (nums[mid]&lt;nums[mid-1])&#123;
-            return TwoDis(nums,before,mid);
-        &#125;
-        else if(nums[mid]&lt;nums[mid+1])&#123;
-            return TwoDis(nums,mid,last);
-        &#125;
-        return -1;
+    public static void swap(int[] arr,int i, int j)&#123;
+        int tmp&#x3D;arr[i];
+        arr[i]&#x3D;arr[j];
+        arr[j]&#x3D;tmp;
     &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-此题目与leetcode162寻找峰值相同。  <pre><code>info
-解答成功:
-执行耗时:0 ms,击败了100.00% 的Java用户
-内存消耗:38.3 MB,击败了8.54% 的Java用户
-</code></pre>
-在时间上已经是最优化，可能因为递归的原因占用内存较大。</li>
-</ol>
-</li>
-</ul>
+    &#x2F;&#x2F;这是一个处理arr[l....R]的函数
+    &#x2F;&#x2F;默认以arr[r]做划分，arr[r]-&gt;p
+    &#x2F;&#x2F;返回等于区域（左边界，右边界），所以返回一个长度为2的数组res,res[0] res[1]
+    public static int[] partition(int[]arr,int L,int R)&#123;
+        int less&#x3D;L-1;
+        int more&#x3D;R;
+        while (L&lt;more)&#123;
+            if (arr[L]&lt;arr[R])&#123;
+                swap(arr,++less,L++);
+            &#125; else if (arr[L] &gt; arr[R]) &#123;
+                swap(arr,--more,L);
+            &#125;
+            else &#123;
+                L++;
+            &#125;
+        &#125;
+        swap(arr,more,R);
+        return new int[]&#123;less+1,more&#125;;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -570,7 +556,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://laogou.github.io/2021/12/01/ju-bu-zui-xiao-zhi-wen-ti/">http://laogou.github.io/2021/12/01/ju-bu-zui-xiao-zhi-wen-ti/</a>
+                    <a href="http://laogou.github.io/2021/12/04/kuai-pai-sui-ji-shu-v3-0/">http://laogou.github.io/2021/12/04/kuai-pai-sui-ji-shu-v3-0/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -779,17 +765,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/12/02/oj-chang-yong-dai-ma/">
+                <a href="/2021/12/04/kuai-pai-sui-ji-shu-v3-0/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="OJ常用代码">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="快排+随机数V3.0">
                         
-                        <span class="card-title">OJ常用代码</span>
+                        <span class="card-title">快排+随机数V3.0</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -799,9 +786,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-04
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -814,6 +801,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -832,13 +820,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/12/01/yi-chong-jiao-huan-wei-zhi-de-fang-fa/">
+                <a href="/2021/12/02/xiao-he-wen-ti-he-ni-xu-dui-wen-ti/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="一种交换位置的方法+面试题">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="小和问题和逆序对问题">
                         
-                        <span class="card-title">一种交换位置的方法+面试题</span>
+                        <span class="card-title">小和问题和逆序对问题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -849,7 +837,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-02
                             </span>
                         <span class="publish-author">
                             
