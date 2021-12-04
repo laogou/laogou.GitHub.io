@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title>比较器</title>
+      <link href="/2021/12/04/bi-jiao-qi/"/>
+      <url>/2021/12/04/bi-jiao-qi/</url>
+      
+        <content type="html"><![CDATA[<p>比较器在C++里和重载运算符含义相同。</p><pre class="line-numbers language-none"><code class="language-none">package class01;import java.util.Arrays;import java.util.Comparator;import java.util.PriorityQueue;&#x2F;** * Creat by zhangzhiyuan * Date 2021&#x2F;12&#x2F;4 * Time 23:25 *&#x2F;public class Code11_MyComparator &#123;    &#x2F;&#x2F;需要的学生类    public static class Student &#123;        public String name;        public int id;        public int age;        public Student(String name, int id, int age) &#123;            this.name &#x3D; name;            this.id &#x3D; id;            this.age &#x3D; age;        &#125;    &#125;    public static class IdAscendingComparator implements Comparator&lt;Student&gt; &#123;        @Override        public int compare(Student o1, Student o2) &#123;            &#x2F;&#x2F;返回负数，第一个参数排在前面            &#x2F;&#x2F;返回正数，第二个参数排在前面            &#x2F;&#x2F;返回0，无所谓            return o1.id - o2.id;        &#125;    &#125;    public static class IdDescendingComparator implements Comparator&lt;Student&gt; &#123;        @Override        public int compare(Student o1, Student o2) &#123;            return o2.id - o1.id;        &#125;    &#125;    public static class AgeAscendingComparator implements Comparator&lt;Student&gt; &#123;        @Override        public int compare(Student o1, Student o2) &#123;            return o1.age - o2.age;        &#125;    &#125;    public static class AgeDescendingComparator implements Comparator&lt;Student&gt; &#123;        @Override        public int compare(Student o1, Student o2) &#123;            return o2.age - o1.age;        &#125;    &#125;    public static void printStudents(Student[] students) &#123;        for (Student student : students) &#123;            System.out.println(&quot;Name : &quot; + student.name + &quot;, Id : &quot; + student.id + &quot;, Age : &quot; + student.age);        &#125;        System.out.println(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;);    &#125;    public static void main(String[] args) &#123;        Student student1 &#x3D; new Student(&quot;A&quot;, 1, 23);        Student student2 &#x3D; new Student(&quot;B&quot;, 2, 21);        Student student3 &#x3D; new Student(&quot;C&quot;, 3, 22);        Student[] students &#x3D; new Student[] &#123; student3, student2, student1 &#125;;        printStudents(students);        &#x2F;&#x2F;系统排序，把数组给它，把策略给它，就可以按照策略堆数组进行排序        Arrays.sort(students, new IdAscendingComparator());        printStudents(students);        Arrays.sort(students, new IdDescendingComparator());        printStudents(students);        Arrays.sort(students, new AgeAscendingComparator());        printStudents(students);        Arrays.sort(students, new AgeDescendingComparator());        printStudents(students);        &#x2F;&#x2F;自带的堆结构        PriorityQueue&lt;Student&gt; heap &#x3D; new PriorityQueue&lt;&gt;(new AgeAscendingComparator());        heap.add(student1);        heap.add(student2);        heap.add(student3);        while (!heap.isEmpty())&#123;            Student student &#x3D; heap.poll();            System.out.println(&quot;Name : &quot; + student.name + &quot;, Id : &quot; + student.id + &quot;, Age : &quot; + student.age);        &#125;    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>带比较器，使得制定构建大根堆或者小根堆，并支持自定义的数据结构（类）：  </p><pre class="line-numbers language-none"><code class="language-none">package class01;import java.util.Comparator;import java.util.PriorityQueue;&#x2F;** * Creat by zhangzhiyuan * Date 2021&#x2F;12&#x2F;4 * Time 22:56 * 建小根堆，给几乎有序的数据进行排序，距离不超过K *&#x2F;public class Code10_SortArrayDistanceLessK &#123;    public static class ACom implements Comparator&lt;Integer&gt; &#123;        &#x2F;&#x2F;如果返回负数，认为第一个参数应该在上面        &#x2F;&#x2F;如果返回负数，认为第二个参数应该在上面        &#x2F;&#x2F;如果返回0，无所谓        @Override        public int compare(Integer arg0, Integer arg1) &#123;            return arg1-arg0;  &#x2F;&#x2F;做一个大根堆的比较器        &#125;    &#125;    public void sortArrayDistanceLessK(int[] arr,int k) &#123;        &#x2F;&#x2F;默认小根堆        PriorityQueue&lt;Integer&gt; heap &#x3D; new PriorityQueue&lt;&gt;();        int index&#x3D;0;        &#x2F;&#x2F;建一个小堆，前k个数放进去        for ( ;index &lt;&#x3D; Math.min(arr.length,k); index++) &#123;            heap.add(arr[index]);        &#125;        int i&#x3D;0;        for ( ;index&lt;arr.length ; i++,index++) &#123;            heap.add(arr[index]);            arr[i]&#x3D;heap.poll();        &#125;        while (!heap.isEmpty())&#123;            arr[i++]&#x3D;heap.poll();        &#125;    &#125;    public static void main(String[] args) &#123;        &#x2F;&#x2F;优先级队列，底层就是堆,可以直接用其来建堆，并且建堆的复杂度都是O（N），扩容的复杂度为（均摊）O(logn)，不影响整体表现。        PriorityQueue&lt;Integer&gt; heap &#x3D; new PriorityQueue&lt;&gt;(); &#x2F;&#x2F;默认为大根堆        heap.add(123); &#x2F;&#x2F;添加一个元素        heap.poll();&#x2F;&#x2F;弹出并移除最大值。        &#x2F;&#x2F;有时候必须要手写堆，因为系统堆不能够支持一些操作（修改某个元素值，然后重新调整，系统会从头扫描，不会从那个元素直接操作）        &#x2F;&#x2F;如果想改为小根堆，那么需要传入一个比较器        PriorityQueue&lt;Integer&gt; heap1 &#x3D; new PriorityQueue&lt;&gt;(new ACom());        heap1.add(6);        heap1.add(9);        heap1.add(3);        heap1.add(2);        heap1.add(10);        while (!heap.isEmpty())&#123;            System.out.println(heap.poll());        &#125;        &#x2F;&#x2F;还可以自定义一个复杂的比较器。年龄，id，班级（适用于自定义的类）    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 基于比较排序 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>堆排序及改进</title>
+      <link href="/2021/12/04/dui-pai-xu-ji-gai-jin/"/>
+      <url>/2021/12/04/dui-pai-xu-ji-gai-jin/</url>
+      
+        <content type="html"><![CDATA[<p>堆排序常用代码：  </p><pre class="line-numbers language-none"><code class="language-none">package class01;&#x2F;** * Creat by zhangzhiyuan * Date 2021&#x2F;12&#x2F;4 * Time 17:04 * 堆排序，假设数组长度N，时间复杂度为nlogn（建堆等），空间复杂度O(1) *&#x2F;public class Code09_HeapSort &#123;    public static void swap(int[] arr,int i, int j)&#123;        int tmp&#x3D;arr[i];        arr[i]&#x3D;arr[j];        arr[j]&#x3D;tmp;    &#125;    &#x2F;&#x2F;向上    public static void heapInsert(int[] arr,int index) &#123;        while (arr[index] &gt; arr[(index-1)&#x2F;2])&#123;            &#x2F;&#x2F;子位置比父位置的数大，就进行交换            swap(arr,index,(index-1)&#x2F;2);            index&#x3D;(index-1)&#x2F;2;   &#x2F;&#x2F;指针再移动到父位置，准备继续寻找        &#125;    &#125;    &#x2F;&#x2F;某个数在index位置，判断能否往下移动    public static void heapify(int[] arr, int index, int heapSize)&#123;        int left&#x3D;index*2+1; &#x2F;&#x2F;左孩子        while (left&lt;heapSize)&#123;  &#x2F;&#x2F;下方还有孩子的时候            &#x2F;&#x2F;两个孩子中，选择出大的那个和父交换            int largest&#x3D; ((left+1 &lt; heapSize) &amp;&amp; (arr[left+1] &gt; arr[left])) ? left+1 : left;  &#x2F;&#x2F;把孩子中较大的下标给largest            largest&#x3D;arr[largest]&gt;arr[index]?largest:index; &#x2F;&#x2F;父亲和孩子之间，谁的值大，把下标给largest            if (largest &#x3D;&#x3D; index)&#123;                break;            &#125;            swap(arr,largest,index);            index&#x3D;largest;            left&#x3D;index*2+1;        &#125;    &#125;    &#x2F;&#x2F;heap操作添加一个数据，调整级别是logn级别的    &#x2F;&#x2F;堆排序    public static void heap(int[] arr) &#123;        &#x2F;&#x2F;调整大根堆的操作~逐步增加数据，从0个开始增加数据，相当于逐步插入数据。        &#x2F;&#x2F;删除堆顶，相当于把最后一个和堆顶交换，然后heapsize--，然后调整，这相当于删除了一个元素。        if (arr&#x3D;&#x3D;null || arr.length&lt;2)&#123;            return;        &#125;&#x2F;&#x2F;方法1，常规思路，下面有优化        for (int i &#x3D; 0; i &lt; arr.length; i++) &#123;            heapInsert(arr,i);        &#125;        int heapSize&#x3D;arr.length;        swap(arr,0,--heapSize);        while (heapSize &gt; 0) &#123;            heapify(arr,0,heapSize);            swap(arr,0,--heapSize);        &#125;    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>思考：当用户给我一个数组，可以把他默认为一个堆，然后从下往上进行heapfy调整。逐渐形成一个个小堆，然后上面进行一个heapfy，最后构成整个堆。<br>证明：N个数组成的树，叶子节点大约有N/2个，从他们开始向下进行调整时，复杂度为O(1),倒数第二层节点为N/4个，向下调整复杂度为2，累加之后整体复杂度为<code>T(N)=N/2 *1 + N/4 *2 + N/8 *3 +...</code>，2Tn-Tn，错位相减，估计后为时间复杂度为O(n)  </p><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;方法2：当用户给我一个数组，可以把他默认为一个堆，然后从下往上进行heapfy调整。逐渐形成一个个小堆，然后上面进行一个heapfy，最后构成整个堆，证明见博客       for (int i &#x3D; arr.length-1; i &gt;&#x3D;0 ; i--) &#123;           heapify(arr,i, arr.length);       &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><ul><li>堆结构永远比堆排序重要。</li><li>优先级队列就是堆，不是队列。认为堆顶是优先级最大的<br>例题：有一个几乎有序的数组，几乎有序是指：一个数移动到它应该所在的位置，距离不超过k。并且k相对数组长度来说较小。<br>解答：如果k为6，那么准备一个长度为7的小根堆，然后堆顶就是最小值（因为7位置后面的距离0位置超过6，故不可能为最大值），然后从第8个开始，挨个放到小根堆中，然后选出堆顶，这就是第二小的，然后再拿一个放到小根堆中……这样复杂度为O(N*logK)<pre class="line-numbers language-none"><code class="language-none">package class01;import java.util.PriorityQueue;&#x2F;** * Creat by zhangzhiyuan * Date 2021&#x2F;12&#x2F;4 * Time 22:56 * 建小根堆，给几乎有序的数据进行排序，距离不超过K *&#x2F;public class Code10_SortArrayDistanceLessK &#123;    public void sortArrayDistanceLessK(int[] arr,int k) &#123;        &#x2F;&#x2F;默认小根堆        PriorityQueue&lt;Integer&gt; heap &#x3D; new PriorityQueue&lt;&gt;();        int index&#x3D;0;        &#x2F;&#x2F;建一个小堆，前k个数放进去        for ( ;index &lt;&#x3D; Math.min(arr.length,k); index++) &#123;            heap.add(arr[index]);        &#125;        int i&#x3D;0;        for ( ;index&lt;arr.length ; i++,index++) &#123;            heap.add(arr[index]);            arr[i]&#x3D;heap.poll();        &#125;        while (!heap.isEmpty())&#123;            arr[i++]&#x3D;heap.poll();        &#125;    &#125;    public static void main(String[] args) &#123;        &#x2F;&#x2F;优先级队列，底层就是堆,可以直接用其来建堆，并且建堆的复杂度都是O（N），扩容的复杂度为（均摊）O(logn)，不影响整体表现。        PriorityQueue&lt;Integer&gt; heap &#x3D; new PriorityQueue&lt;&gt;();        heap.add(123); &#x2F;&#x2F;添加一个元素        heap.poll();&#x2F;&#x2F;弹出并移除最大值。        &#x2F;&#x2F;有时候必须要手写堆，因为系统堆不能够支持一些操作（修改某个元素值，然后重新调整，系统会从头扫描，不会从那个元素直接操作）    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 基于比较排序 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>快排+随机数V3.0</title>
       <link href="/2021/12/04/kuai-pai-sui-ji-shu-v3-0/"/>
       <url>/2021/12/04/kuai-pai-sui-ji-shu-v3-0/</url>
@@ -21,6 +75,8 @@
         <tags>
             
             <tag> 算法 </tag>
+            
+            <tag> 基于比较排序 </tag>
             
         </tags>
       
@@ -54,7 +110,7 @@
     
     
     <entry>
-      <title>OJ常用代码</title>
+      <title>OJ常用方法</title>
       <link href="/2021/12/02/oj-chang-yong-dai-ma/"/>
       <url>/2021/12/02/oj-chang-yong-dai-ma/</url>
       
