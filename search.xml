@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>数据库复习</title>
+      <link href="/2021/12/20/shu-ju-ku-fu-xi/"/>
+      <url>/2021/12/20/shu-ju-ku-fu-xi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="零碎"><a href="#零碎" class="headerlink" title="零碎"></a>零碎</h2><p>查看当前使用的是哪个库？<code>selece database()</code>像是java中的一个类的方法，实际上是mysql的功能函数。<br>创建一个数据库<code>create database 数据库名</code>，创建一个表：</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>基数排序和桶排序</title>
       <link href="/2021/12/05/qi-shu-pai-xu-he-tong-pai-xu/"/>
       <url>/2021/12/05/qi-shu-pai-xu-he-tong-pai-xu/</url>
@@ -133,7 +158,7 @@
       <link href="/2021/12/02/oj-chang-yong-dai-ma/"/>
       <url>/2021/12/02/oj-chang-yong-dai-ma/</url>
       
-        <content type="html"><![CDATA[<ul><li>求中点：<pre class="line-numbers language-none"><code class="language-none">旧：int mid&#x3D;(L+R)&#x2F;2   &#x2F;&#x2F;可能L+R会溢出新：int mid&#x3D;L+((R-L)&gt;&gt;1);&#x2F;&#x2F;中点<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li></ul><hr><ul><li>master公式估计复杂度 T(N)=a*T(N/b)+O(N^d)<br>T(N)是母问题的数据量，T(N/b)是子问题的规模（相同），a是调用次数，O(N^d)是除了调用之外剩下的时间复杂度。<br>这样的递归可以统一用master公式求解复杂度。</li></ul><ol><li>log(b,a)&gt;d -&gt;复杂度为O(N^log(b,a))</li><li>log(b,a)=d -&gt;复杂度为O(N^d * logN)</li><li>log(b,a)&lt;d -&gt;复杂度为O(N^d)<br>例：code08中的求最大值行为，满足master公式：T(N)=2*T(N/2)+O(1)，即a=2，b=2，d=0，只要子问题复杂度一致的（左侧1/3，右侧2/3，就不可以用），复杂度可以直接求。</li></ol>]]></content>
+        <content type="html"><![CDATA[<ul><li>求中点：<pre class="line-numbers language-none"><code class="language-none">旧：int mid&#x3D;(L+R)&#x2F;2   &#x2F;&#x2F;可能L+R会溢出新：int mid&#x3D;L+((R-L)&gt;&gt;1);&#x2F;&#x2F;中点<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li></ul><hr><ul><li>master公式估计复杂度 T(N)=a*T(N/b)+O(N^d)<br>T(N)是母问题的数据量，T(N/b)是子问题的规模（相同），a是调用次数，O(N^d)是除了调用之外剩下的时间复杂度。<br>这样的递归可以统一用master公式求解复杂度。</li></ul><ol><li>log(b,a)&gt;d -&gt;复杂度为O(N^log(b,a))</li><li>log(b,a)=d -&gt;复杂度为O(N^d * logN)</li><li>log(b,a)&lt;d -&gt;复杂度为O(N^d)<br>例：code08中的求最大值行为，满足master公式：T(N)=2*T(N/2)+O(1)，即a=2，b=2，d=0，只要子问题复杂度一致的（左侧1/3，右侧2/3，就不可以用），复杂度可以直接求。  </li></ol><ul><li><p>判断一个数是不是2的幂次方</p><pre class="line-numbers language-none"><code class="language-none">n&amp;(n-1) &#x2F;&#x2F;结果为0则n为2的幂次方<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>进而判断一个数是不是4的幂次方，如果是，则其二进制中只有一个1，并在偶数位上。如何快速判断在偶数位上？<code>mask=AAAAAAAA</code>然后用n和他进行&amp;运算，mask=101010101010….  </p></li><li><p>哈希表与有序表<br>哈希表是一种集合结构，无序。只有key的叫做HashSet，有key、value的叫做HashMap，基础类型按值传递，自定义类型是引用传递。增删改查都是常数级别的。<br>有序表是一种集合结构，有序。只有key的叫做TreeSet，有key、value的叫做TreehMap。他们的内部是按照key有序组织，要求key可以比较，非基础类型必须提供比较器。logN级别  </p><pre class="line-numbers language-none"><code class="language-none">firstkey();&#x2F;&#x2F;最小key的元素contiainsKey(K key);&#x2F;&#x2F;询问是否有关于key的记录lastkey();&#x2F;&#x2F;最大key的元素floorkey(8);&#x2F;&#x2F;小于等于8中，离8最近的元素，表中可以没有8ceilingKey(8);&#x2F;&#x2F;大于等于8中，离8最近的元素ceilingKey(K key);&#x2F;&#x2F;表中存入过key，返回key，否则返回所有键值排序结果中，key的最后一个。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>红黑树，AVL树，傻逼树，跳表都可以实现有序表  </p></li><li><p>链表<br>快慢指针：用于获取链表的长度等，慢指针一次走一步，快指针一次走两步，这样就不必O(n)+O(n/2)的时间复杂度来找到一个链表中间的位置了，而是O(n/2)。<br>对于快慢指针，我们需要订制一些东西，比如当奇数个时，希望慢指针在中点位置，当偶数个时，希望指针在中点（不存在）的前一个或者后一个。<br>更特殊的，我希望在中点的前两个位置，需要快指针多走一步。等边界条件，需要手动编写多练习。单链表的一些笔试题目，可以先放到数组（元素是ListNode不是value值）里，然后在数组里玩partition。</p></li></ul>]]></content>
       
       
       <categories>
