@@ -481,6 +481,10 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <ul>
+<li>定义数据结构<pre class="line-numbers language-none"><code class="language-none">Stack&lt;Integer&gt; stack &#x3D; new Stack&lt;Integer&gt;(); &#x2F;&#x2F;定义栈，不确定
+Queue&lt;Integer&gt; queue &#x3D; new LinkedList&lt;&gt;(); &#x2F;&#x2F;定义队列
+HashMap&lt;Node, Integer&gt; hashMap &#x3D; new HashMap&lt;&gt;(); &#x2F;&#x2F;定义哈希表
+ List&lt;Integer&gt; list &#x3D; new ArrayList&lt;Integer&gt;(); &#x2F;&#x2F;定义列表（不定长数组）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li>求中点：<pre class="line-numbers language-none"><code class="language-none">旧：int mid&#x3D;(L+R)&#x2F;2   &#x2F;&#x2F;可能L+R会溢出
 新：int mid&#x3D;L+((R-L)&gt;&gt;1);&#x2F;&#x2F;中点<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 </ul>
@@ -507,7 +511,30 @@ ceilingKey(8);&#x2F;&#x2F;大于等于8中，离8最近的元素
 ceilingKey(K key);&#x2F;&#x2F;表中存入过key，返回key，否则返回所有键值排序结果中，key的最后一个。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>红黑树，AVL树，傻逼树，跳表都可以实现有序表  </p>
 </li>
-<li><p>链表<br>快慢指针：用于获取链表的长度等，慢指针一次走一步，快指针一次走两步，这样就不必O(n)+O(n/2)的时间复杂度来找到一个链表中间的位置了，而是O(n/2)。<br>对于快慢指针，我们需要订制一些东西，比如当奇数个时，希望慢指针在中点位置，当偶数个时，希望指针在中点（不存在）的前一个或者后一个。<br>更特殊的，我希望在中点的前两个位置，需要快指针多走一步。等边界条件，需要手动编写多练习。单链表的一些笔试题目，可以先放到数组（元素是ListNode不是value值）里，然后在数组里玩partition。</p>
+<li><p>链表<br>快慢指针：用于获取链表的长度等，慢指针一次走一步，快指针一次走两步，这样就不必O(n)+O(n/2)的时间复杂度来找到一个链表中间的位置了，而是O(n/2)。<br>对于快慢指针，我们需要订制一些东西，比如当奇数个时，希望慢指针在中点位置，当偶数个时，希望指针在中点（不存在）的前一个或者后一个。<br>更特殊的，我希望在中点的前两个位置，需要快指针多走一步。等边界条件，需要手动编写多练习。单链表的一些笔试题目，可以先放到数组（元素是ListNode不是value值）里，然后在数组里玩partition。  </p>
+</li>
+</ul>
+<p>六变量处理partition的最后判断过程：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;已有sH、sT、eH、eT、mH、mT：小于等于大于分界值的头尾节点，最后的判断连接问题
+if(sT!&#x3D;null)&#123;
+	sT.next&#x3D;eH;
+	eT&#x3D; eT&#x3D;&#x3D;null?sT:eT;
+&#125;
+if(eT!&#x3D;null)&#123;
+	eT.next&#x3D;mH;
+&#125;
+return sH!&#x3D;null?sH:(eH!&#x3D;null?eH:mH);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>判断一个链表中有没有环：快慢指针，起始位置相同，快指针一次走两步，慢指针走1步，如果没有环，那么快指针会==null，如果有环，那么快指针和慢指针在环里边转圈，不超过两圈，一定会相遇。<br>当在环中快慢指针相遇时，慢指针停留原地，快指针返回起点，然后共同前进（一次一步），他们一定会在环形入口处相遇。（数学证明：）  </p>
+<ul>
+<li><p>二叉树迭代遍历</p>
+<ul>
+<li>先序：准备一个栈，根节点入栈，循环（栈顶弹出一个r，访问处理r，r的右孩进栈，r的左孩进栈）。</li>
+<li>中序：准备一个栈，（左边界全部入栈，弹出过程中，访问），对每次弹出节点，让他的右边子树重复上述步骤。</li>
+<li>后序：准备两个栈，根节点入栈，循环（栈顶弹出一个r，r放到收集栈，r左孩入栈，r右孩入栈）打印收集栈。</li>
+<li>宽度优先：用队列。循环（打印，队列放左孩子，队列放右孩子）。求最大宽度时，准备一张HashMap&lt;Node,int&gt;（二版不需要，leetcode用hashmap内存超限，662记录了详细操作），记录每个节点在第几层（进栈时记录）。同时设置三个变量：1.cur：记录当前层数。2.curNode：当前层几个节点。3.max哪一层节点数最多。r然后更新</li>
+</ul>
+</li>
+<li><p>树的DP问题：<br>当遇到判断是否是满二叉树等树类型的dp问题的时候，可以用如下套路解决：</p>
 </li>
 </ul>
 

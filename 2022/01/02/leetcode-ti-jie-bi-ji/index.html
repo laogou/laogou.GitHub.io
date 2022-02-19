@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="数据库复习, 程序员 学习 路线">
+    <meta name="keywords" content="leetcode题解笔记, 程序员 学习 路线">
     <meta name="description" content="个人经验总结和学习记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>数据库复习 | 唐岛湾里的小虾米</title>
+    <title>leetcode题解笔记 | 唐岛湾里的小虾米</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">数据库复习</h1>
+                    <h1 class="description center-align post-title">leetcode题解笔记</h1>
                 </div>
             </div>
         </div>
@@ -431,8 +431,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
-                                <span class="chip bg-color">数据库</span>
+                            <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                <span class="chip bg-color">算法</span>
                             </a>
                         
                     </div>
@@ -443,8 +443,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                数据库
+                            <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
+                                算法
                             </a>
                         
                     </div>
@@ -456,7 +456,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-20
+                    2022-01-02
                 </div>
                 
 
@@ -480,7 +480,21 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="零碎"><a href="#零碎" class="headerlink" title="零碎"></a>零碎</h2><p>查看当前使用的是哪个库？<code>selece database()</code>像是java中的一个类的方法，实际上是mysql的功能函数。<br>创建一个数据库<code>create database 数据库名</code>，创建一个表：</p>
+                <p>本片文章为leetcode做题中的一些笔记和思路（技巧性）  </p>
+<ul>
+<li>leetcode138：复杂链表（随机指针）的复制<br>方法一：借助辅助空间：hashmap，然后键值对为&lt;旧节点，新节点&gt;然后对旧节点进行遍历，同时为新节点设置next和random_next。此方法依赖额外的O(n)的辅助空间。<br>方法二：操作一下。首先新复制n个节点（值），放在原节点的后面，使之串成一个大链表（原来1-&gt;2，后来1-&gt;1’-&gt;2-&gt;2’），然后对整条链表根据一对一对的，遍历过程中为新节点设置和旧节点一样的random_next。最后拆分开来就可以。</li>
+<li>leetcode142：环形链表<br>若链表有环，在空间复杂为O(1)下找出入环节点：快慢指针，快指针一次两步，慢指针一次一步。如果有环难么他俩一定相遇，没环，则快指针会null。有环之后，慢指针停留在原地，快指针去开头，两个一起往前走（一次一步），则他们一定会在环的入口处相遇。返回即可。  </li>
+<li>leetcode：环形链表相交：<br>两个链表，可能有或者没有环，判断是否相交以及交点问题：首先用leetcode142问题中的找链表的环入口，得到两个链表的环（可能存在）入口loop1和loop2。然后分情况进行处理。  <ul>
+<li>情况1：loop1和loop2都是null，这就转化成两个无环链表相交问题。  </li>
+<li>情况2：loop1和loop2一个为空，一个不为空，这种情况两个链表一定不相交。因为只要有环一定共用环。  </li>
+<li>情况3：loop1和loop2都不为空，那么肯定共用环，分情况处理。  <ul>
+<li>当loop1==loop2时，分为两种情况，一种是两个链表的共同入环节点也是交点，一种是在共同入环之前就相交。这两种都转化为两个无环链表相交问题。</li>
+<li>当loop1!=loop2时，保持loop1不动，loop2向前进，会相遇到loop1的位置，反之亦然。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
                 
             </div>
@@ -507,7 +521,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://laogou.github.io/2021/12/20/shu-ju-ku-fu-xi/">http://laogou.github.io/2021/12/20/shu-ju-ku-fu-xi/</a>
+                    <a href="http://laogou.github.io/2022/01/02/leetcode-ti-jie-bi-ji/">http://laogou.github.io/2022/01/02/leetcode-ti-jie-bi-ji/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -545,8 +559,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
-                                    <span class="chip bg-color">数据库</span>
+                                <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                    <span class="chip bg-color">算法</span>
                                 </a>
                             
                         </div>
@@ -720,13 +734,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/01/02/leetcode-ti-jie-bi-ji/">
+                <a href="/2022/02/19/leetcode-java-ji-chu-cao-zuo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="leetcode题解笔记">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="leetcode-java基础操作">
                         
-                        <span class="card-title">leetcode题解笔记</span>
+                        <span class="card-title">leetcode-java基础操作</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -737,7 +751,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-02
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-19
                         </span>
                         <span class="publish-author">
                             
@@ -769,13 +783,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/12/05/qi-shu-pai-xu-he-tong-pai-xu/">
+                <a href="/2021/12/20/shu-ju-ku-fu-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="基数排序和桶排序">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="数据库复习">
                         
-                        <span class="card-title">基数排序和桶排序</span>
+                        <span class="card-title">数据库复习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -786,12 +800,16 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-20
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            cihiyuanzhang
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -799,8 +817,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%AE%97%E6%B3%95/">
-                        <span class="chip bg-color">算法</span>
+                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <span class="chip bg-color">数据库</span>
                     </a>
                     
                 </div>
