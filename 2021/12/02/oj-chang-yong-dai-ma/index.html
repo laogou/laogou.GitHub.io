@@ -534,7 +534,33 @@ return sH!&#x3D;null?sH:(eH!&#x3D;null?eH:mH);<span aria-hidden="true" class="li
 <li>宽度优先：用队列。循环（打印，队列放左孩子，队列放右孩子）。求最大宽度时，准备一张HashMap&lt;Node,int&gt;（二版不需要，leetcode用hashmap内存超限，662记录了详细操作），记录每个节点在第几层（进栈时记录）。同时设置三个变量：1.cur：记录当前层数。2.curNode：当前层几个节点。3.max哪一层节点数最多。r然后更新</li>
 </ul>
 </li>
-<li><p>树的DP问题：<br>当遇到判断是否是满二叉树等树类型的dp问题的时候，可以用如下套路解决：</p>
+<li><p>树的DP问题：<br>当遇到判断是否是满二叉树等树类型的dp问题的时候，可以用如下套路解决：<br>我们需要三个信息（假如在判断平衡二叉树当中），1.左右子树是否平衡，2.左右子树的高度，由此可以构建递归，因为递归要求每一此的返回信息的结构必须是相同的。</p>
+<pre class="line-numbers language-none"><code class="language-none">public boolean isBalanced(TreeNode root) &#123;
+       return process(root).isBalanced;
+   &#125;
+   &#x2F;&#x2F;复杂结构数据类型(自定义类)，我们需要三个信息，1左右子树是否是平衡二叉树，2左子树和右子树高度差是否小于2。下面是返回信息的数据类型
+   public static class ReturnType&#123;
+       public boolean isBalanced; &#x2F;&#x2F;是否是平衡树
+       public int height;  &#x2F;&#x2F;高度
+
+       public ReturnType(boolean isB, int hei)&#123;
+           isBalanced&#x3D;isB;
+           height&#x3D;hei;
+       &#125;
+   &#125;
+   public static ReturnType process(TreeNode x)&#123;
+       if (x&#x3D;&#x3D;null)&#123;
+           return new ReturnType(true,0);
+       &#125;
+       &#x2F;&#x2F;当树不空的时候，获取左右子树的详细信息
+       ReturnType leftData &#x3D; process(x.left);
+       ReturnType rightData &#x3D; process(x.right);
+       int height &#x3D; Math.max(leftData.height,rightData.height)+1; &#x2F;&#x2F;这是当前节点的树高
+       boolean isBalanced &#x3D; leftData.isBalanced &amp;&amp; rightData.isBalanced &amp;&amp; Math.abs(leftData.height-rightData.height)&lt;2;
+
+       return new ReturnType(isBalanced,height);
+   &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但不是所有的树问题都可以用此方法解，比如求一个二叉树的中位数问题，不可能是左树的中位数和右子树的中位树和当前节点三者选出一个作中位数，这是不合理的。</p>
 </li>
 </ul>
 
